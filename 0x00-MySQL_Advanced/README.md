@@ -34,3 +34,7 @@ Requirements:
 - Column names must be: `band_name` and `lifespan` (in years until 2022 - please use `2022` instead of `YEAR(CURDATE())`)
 - You should use attributes `formed` and `split` for computing the `lifespan`
 - Your script can be executed on any database
+
+### Task 4
+Write a SQL script that creates a trigger that decreases the quantity of an item after adding a new order.
+Quantity in the table `items` can be negative.
