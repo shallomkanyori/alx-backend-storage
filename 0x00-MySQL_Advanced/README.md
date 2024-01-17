@@ -38,3 +38,6 @@ Requirements:
 ### Task 4
 Write a SQL script that creates a trigger that decreases the quantity of an item after adding a new order.
 Quantity in the table `items` can be negative.
+
+### Task 5
+Write a SQL script that creates a trigger that resets the attribute `valid_email` only when the `email` has been changed.
