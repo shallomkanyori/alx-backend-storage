@@ -27,3 +27,10 @@ Requirements:
 - Import [metal_bands.sql](metal_bands.sql) table dump
 - Column names must be: `origin` and `nb_fans`
 - Your script can be executed on any database
+
+### Task 3
+Write a SQL script that lists all bands with `Glam rock` as their main style, ranked by their longevity
+Requirements:
+- Column names must be: `band_name` and `lifespan` (in years until 2022 - please use `2022` instead of `YEAR(CURDATE())`)
+- You should use attributes `formed` and `split` for computing the `lifespan`
+- Your script can be executed on any database
