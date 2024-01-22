@@ -34,3 +34,9 @@ Write a script that adds a new attribute to a document in the collection `school
 ### Task 7
 Write a script that deletes all documents with `name="Holberton school"` in the collection `school`:
 - The database name will be passed as option of `mongo` command
+
+### Task 8
+Write a Python function that lists all documents in a collection:
+- Prototype: `def list_all(mongo_collection):`
+- Return an empty list if no document in the collection
+- `mongo_collection` will be the `pymongo` collection object
