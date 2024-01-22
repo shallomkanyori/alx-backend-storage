@@ -71,3 +71,9 @@ Write a Python script that provides some stats about Nginx logs stored in MongoD
 	- one line with the number of documents with:
 		- `method=GET`
 		- `path=/status`
+
+## Advanced
+
+### Task 13
+Write a script that lists all documents with `name` starting by `Holberton` in the collection `school`:
+- The database name will be passed as option of `mongo` command
