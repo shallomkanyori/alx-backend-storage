@@ -1,0 +1,2 @@
+// Adds a new attribute to filtered documents in the collection school
+db.school.updateMany({name: "Holberton school"}, [{$set: {address: "972 Mission street"}}])
