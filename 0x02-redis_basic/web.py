@@ -12,11 +12,11 @@ from typing import Callable
 r = redis.Redis()
 
 
-def cacher(method: Callable[[str], str]) -> Callable[[str], str]:
+def cacher(method: Callable) -> Callable:
     """Returns a function that caches HTML content of url."""
 
     @functools.wraps(method)
-    def wrapper(url: str) -> str:
+    def wrapper(url) -> str:
         """ Calls the method and caches the result
         """
 
@@ -30,7 +30,7 @@ def cacher(method: Callable[[str], str]) -> Callable[[str], str]:
             return res.decode("utf-8")
 
         result = method(url)
-        r.set(ckey, 0)
+        r.set(ckey, 1)
         r.setex(rkey, 10, result)
 
         return result
