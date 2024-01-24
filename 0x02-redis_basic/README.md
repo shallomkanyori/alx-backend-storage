@@ -39,3 +39,6 @@ In `call_history`, use the decorated function’s qualified name and append `":i
 In the new function that the decorator will return, use `rpush` to append the input arguments. Remember that Redis can only store strings, bytes and numbers. Therefore, we can simply use `str(args)` to normalize. We can ignore potential `kwargs` for now. Execute the wrapped function to retrieve the output. Store the output using `rpush` in the `"...:outputs"` list, then return the output.
 
 Decorate `Cache.store` with `call_history`.
+
+### Task 4
+In this tasks, we will implement a `replay` function to display the history of calls of a particular function.

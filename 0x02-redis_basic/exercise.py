@@ -7,7 +7,7 @@ Classes:
 import functools
 import redis
 import uuid
-from typing import Union, Callable, TypeVar, Any
+from typing import Union, Callable, TypeVar, Any, List
 
 
 T = TypeVar("T", str, bytes, int, float)
@@ -46,6 +46,29 @@ def call_history(method: Callable) -> Callable:
         return outputs
 
     return wrapper
+
+
+def replay(method: Callable) -> None:
+    """Displays the history calls of a particular function."""
+
+    if method is None or not hasattr(method, "__self__"):
+        return
+
+    self = getattr(method, "__self__", None)
+    r = getattr(self, "_redis", None)
+    if not isinstance(r, redis.Redis):
+        return
+
+    pref = method.__qualname__
+    inputs = r.lrange(pref + ":inputs", 0, -1)
+    outputs = r.lrange(pref + ":outputs", 0, -1)
+    calls = list(zip(inputs, outputs))
+
+    print("{} was called {} times:".format(pref, len(calls)))
+    for call in calls:
+        print("{}(*{}) -> {}".format(pref,
+                                     call[0].decode("utf-8"),
+                                     call[1].decode("utf-8")))
 
 
 class Cache():
