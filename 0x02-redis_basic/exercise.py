@@ -4,12 +4,28 @@
 Classes:
     Cache
 """
+import functools
 import redis
 import uuid
 from typing import Union, Callable, TypeVar
 
 
 T = TypeVar('T', str, bytes, int, float)
+
+
+def count_calls(method: Callable) -> Callable:
+    """Returns a function that counts the number of times a method is called"""
+
+    @functools.wraps(method)
+    def counter(*args, **kwargs):
+        """The counter function."""
+        self = args[0]
+        key = method.__qualname__
+
+        self._redis.incr(key)
+        return method(*args, **kwargs)
+
+    return counter
 
 
 class Cache():
@@ -21,6 +37,7 @@ class Cache():
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data in Redis with a random key and returns the key."""
 

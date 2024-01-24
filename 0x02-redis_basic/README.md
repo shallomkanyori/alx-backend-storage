@@ -15,3 +15,18 @@ In this exercise we will create a `get` method that take a key string argument a
 Remember to conserve the original `Redis.get` behavior if the key does not exist.
 
 Also, implement 2 new methods: `get_str` and `get_int` that will automatically parametrize `Cache.get` with the correct conversion function.
+
+### Task 2
+In this task, we will implement a system to count how many times methods of the `Cache` class are called.
+
+Above `Cache` define a `count_calls` decorator that takes a single `method` `Callable` argument and returns a `Callable`.
+
+As a key, use the qualified name of method using the `__qualname__` dunder method.
+
+Create and return a function that increments the count for that key every time the method is called and returns the value returned by the original method.
+
+Remember that the first argument of the wrapped function will be `self` which is the instance itself, which lets you access the Redis instance.
+
+Protip: when defining a decorator it is useful to use `functool.wraps` to conserve the original function’s name, docstring, etc.
+
+Decorate `Cache.store` with `count_calls`.
