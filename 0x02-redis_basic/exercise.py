@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Wrting strings to Redis
+"""Contains the Cache class that represents a Redis cache.
 
 Classes:
     Cache
@@ -21,7 +21,7 @@ class Cache():
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: T) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data in Redis with a random key and returns the key."""
 
         key = str(uuid.uuid4())
