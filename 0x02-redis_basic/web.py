@@ -12,27 +12,33 @@ from typing import Callable
 r = redis.Redis()
 
 
-def slow_response(method: Callable[[str], str]) -> Callable[[str], str]:
-    """Returns a function that tests get_page by simulating a slow response."""
+def cacher(method: Callable[[str], str]) -> Callable[[str], str]:
+    """Returns a function that caches HTML content of url."""
 
     @functools.wraps(method)
     def wrapper(url: str) -> str:
-        """ Calls the method with the url http://slowwly.robertomurray.co.uk
+        """ Calls the method and caches the result
         """
-        return method("http://slowwly.robertomurray.co.uk")
+
+        ckey = "count:" + url
+        rkey = "result:" + url
+
+        r.incr(ckey)
+
+        res = r.get(rkey)
+        if res:
+            return res.decode("utf-8")
+
+        result = method(url)
+        r.set(ckey, 0)
+        r.setex(rkey, 10, result)
+
+        return result
 
     return wrapper
 
 
+@cacher
 def get_page(url: str) -> str:
     """Tracks how many time a URL was accessed."""
-
-    key = "count:" + url
-
-    if not r.exists(key):
-        r.setex(key, 10, 1)
-    else:
-        r.incr(key)
-
-    res = requests.get(url)
-    return res.text
+    return requests.get(url).text
