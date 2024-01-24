@@ -7,7 +7,7 @@ Classes:
 import functools
 import redis
 import uuid
-from typing import Union, Callable, TypeVar, Any, cast
+from typing import Union, Callable, TypeVar, Any
 
 
 T = TypeVar("T", str, bytes, int, float)
@@ -17,13 +17,14 @@ def count_calls(method: Callable) -> Callable:
     """Returns a function that counts the number of times a method is called"""
 
     @functools.wraps(method)
-    def counter(*args: Any, **kwargs: Any) -> Any:
+    def counter(self, *args, **kwargs) -> Any:
         """The counter function."""
-        self = args[0]
-        key = method.__qualname__
 
-        self._redis.incr(key)
-        return method(*args, **kwargs)
+        if isinstance(self._redis, redis.Redis):
+            key = method.__qualname__
+            self._redis.incr(key)
+
+        return method(self, *args, **kwargs)
 
     return counter
 
