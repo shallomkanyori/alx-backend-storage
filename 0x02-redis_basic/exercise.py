@@ -11,10 +11,9 @@ from typing import Union, Callable, TypeVar, Any, cast
 
 
 T = TypeVar("T", str, bytes, int, float)
-FuncT = TypeVar("FuncT", bound=Callable[..., Any])
 
 
-def count_calls(method: FuncT) -> FuncT:
+def count_calls(method: Callable) -> Callable:
     """Returns a function that counts the number of times a method is called"""
 
     @functools.wraps(method)
@@ -26,7 +25,7 @@ def count_calls(method: FuncT) -> FuncT:
         self._redis.incr(key)
         return method(*args, **kwargs)
 
-    return cast(FuncT, counter)
+    return counter
 
 
 class Cache():
